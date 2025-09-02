@@ -5,6 +5,7 @@ go 1.24.3
 require (
 	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.3
 	github.com/gofiber/fiber/v2 v2.52.9
+	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/yuin/goldmark v1.7.13
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.2
@@ -27,7 +28,7 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.51.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
+	golang.org/x/crypto v0.31.0
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
