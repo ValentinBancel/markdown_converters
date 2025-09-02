@@ -1,0 +1,10 @@
+<form (ngSubmit)="submit()">
+  <div>
+    <input [(ngModel)]="email" name="email" placeholder="Email" required />
+  </div>
+  <div>
+    <input [(ngModel)]="password" name="password" type="password" placeholder="Password" required />
+  </div>
+  <button type="submit">{{ isLogin ? 'Login' : 'Register' }}</button>
+</form>
+<button (click)="toggle()">Switch to {{ isLogin ? 'Register' : 'Login' }}</button>
