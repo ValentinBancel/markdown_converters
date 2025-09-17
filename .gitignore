@@ -1,3 +1,10 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Build outputs
+/frontend/dist/
+/backend/server
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -40,15 +47,31 @@ postgres_data/
 *.swo
 *~
 
-# OS generated files
+# OS files
 .DS_Store
-.DS_Store?
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Go vendor
+vendor/
+
+# Temporary files
+tmp/
+temp/
+
+# OS generated files
+
 ._*
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db
-
 
 # Build artifacts
 dist/
@@ -60,3 +83,4 @@ bin/
 dist/
 fiber-app
 fiber-demo
+
