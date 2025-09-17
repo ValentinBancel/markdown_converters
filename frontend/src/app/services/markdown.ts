@@ -12,6 +12,7 @@ export interface MarkdownResponse {
   format: string;
   success: boolean;
   message: string;
+  fileData?: string; // Base64 encoded file data for PDF/binary formats
 }
 
 export interface HealthResponse {

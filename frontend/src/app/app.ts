@@ -20,6 +20,8 @@ export class App {
   error = '';
   availableFormats: string[] = [];
   apiStatus = '';
+  downloadUrl = ''; // For PDF download link
+  pdfData = ''; // Base64 PDF data
 
   constructor(private markdownService: MarkdownService) {
     this.checkApiHealth();
@@ -72,6 +74,15 @@ export class App {
         this.isLoading = false;
         if (response.success) {
           this.convertedContent = response.convertedContent;
+          
+          // Handle PDF file data
+          if (response.format === 'pdf' && response.fileData) {
+            this.pdfData = response.fileData;
+            this.createDownloadUrl(response.fileData, 'document.pdf', 'application/pdf');
+          } else {
+            this.pdfData = '';
+            this.downloadUrl = '';
+          }
         } else {
           this.error = response.message;
         }
@@ -88,5 +99,35 @@ export class App {
     this.markdownContent = '';
     this.convertedContent = '';
     this.error = '';
+    this.pdfData = '';
+    this.downloadUrl = '';
+  }
+
+  // Create download URL for binary files
+  createDownloadUrl(base64Data: string, filename: string, mimeType: string) {
+    try {
+      const binaryString = atob(base64Data);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: mimeType });
+      this.downloadUrl = URL.createObjectURL(blob);
+    } catch (error) {
+      console.error('Error creating download URL:', error);
+      this.error = 'Error preparing PDF download';
+    }
+  }
+
+  // Trigger download
+  downloadPdf() {
+    if (this.downloadUrl) {
+      const link = document.createElement('a');
+      link.href = this.downloadUrl;
+      link.download = 'document.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   }
 }
