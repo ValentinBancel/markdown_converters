@@ -1,8 +1,13 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
+	"io/ioutil"
 	"log"
+	"os"
+	"os/exec"
+	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -20,6 +25,7 @@ type MarkdownResponse struct {
 	Format           string `json:"format"`
 	Success          bool   `json:"success"`
 	Message          string `json:"message"`
+	FileData         string `json:"fileData,omitempty"` // Base64 encoded binary data for PDF
 }
 
 // SimpleResponse for basic endpoints
@@ -84,13 +90,14 @@ func main() {
 		}
 
 		// Basic markdown to HTML conversion (simplified)
-		convertedContent := convertMarkdown(req.Content, req.Format)
+		convertedContent, fileData := convertMarkdown(req.Content, req.Format)
 
 		return c.JSON(MarkdownResponse{
 			ConvertedContent: convertedContent,
 			Format:           req.Format,
 			Success:          true,
 			Message:          "Conversion successful",
+			FileData:         fileData,
 		})
 	})
 
@@ -100,7 +107,7 @@ func main() {
 }
 
 // Simple markdown to HTML converter (basic implementation)
-func convertMarkdown(content, format string) string {
+func convertMarkdown(content, format string) (string, string) {
 	switch format {
 	case "html":
 		// Very basic markdown to HTML conversion
@@ -120,13 +127,60 @@ func convertMarkdown(content, format string) string {
 			html = "<p>" + html + "</p>"
 		}
 		
-		return html
+		return html, ""
+	case "pdf":
+		// Generate PDF using pandoc
+		pdfData, err := generatePDF(content)
+		if err != nil {
+			return "Error generating PDF: " + err.Error(), ""
+		}
+		
+		// Return base64 encoded PDF data
+		return "PDF generated successfully", pdfData
 	case "txt":
 		// Return plain text (remove markdown syntax)
-		return content
+		return content, ""
 	default:
-		return "Format '" + format + "' not yet implemented. Content: " + content
+		return "Format '" + format + "' not yet implemented. Content: " + content, ""
 	}
+}
+
+// generatePDF converts markdown content to PDF using pandoc
+func generatePDF(content string) (string, error) {
+	// Create temporary directory for conversion
+	tempDir, err := ioutil.TempDir("", "markdown_pdf_*")
+	if err != nil {
+		return "", err
+	}
+	defer os.RemoveAll(tempDir) // Clean up
+	
+	// Write markdown content to temporary file
+	mdFile := filepath.Join(tempDir, "input.md")
+	err = ioutil.WriteFile(mdFile, []byte(content), 0644)
+	if err != nil {
+		return "", err
+	}
+	
+	// Generate PDF using pandoc
+	pdfFile := filepath.Join(tempDir, "output.pdf")
+	cmd := exec.Command("pandoc", mdFile, "-o", pdfFile, 
+		"--pdf-engine=wkhtmltopdf", 
+		"--pdf-engine-opt=--enable-local-file-access",
+		"--metadata", "title=Markdown Document")
+	
+	// Execute command
+	if err := cmd.Run(); err != nil {
+		return "", err
+	}
+	
+	// Read the generated PDF file
+	pdfData, err := ioutil.ReadFile(pdfFile)
+	if err != nil {
+		return "", err
+	}
+	
+	// Return base64 encoded PDF data
+	return base64.StdEncoding.EncodeToString(pdfData), nil
 }
 
 // Helper function for simple string replacement
