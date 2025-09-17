@@ -190,6 +190,7 @@ make clean          # Clean up everything
 ```
 
 3. The services will be available at:
+   - **Frontend**: http://localhost:4200
    - **API**: http://localhost:8080
    - **Database**: localhost:5432
    - **pgAdmin**: http://localhost:5050 (admin@admin.com / admin)

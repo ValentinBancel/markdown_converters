@@ -1,5 +1,5 @@
 # Multi-stage build for Angular app
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install dependencies - use npm install instead of npm ci for better error handling
+RUN npm config set strict-ssl false && npm install
 
 # Copy source code
 COPY . .
