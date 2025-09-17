@@ -5,7 +5,41 @@ npm-debug.log*
 # Build outputs
 /frontend/dist/
 /backend/server
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
 
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+go.work
+
+# Environment variables
+.env
+
+# Docker volumes
+postgres_data/
+
+# Logs
+*.log
+.env.local
+
+# Log files
+*.log
+
+# Database
+*.db
+*.sqlite
 # IDE files
 .vscode/
 .idea/
@@ -31,3 +65,22 @@ vendor/
 # Temporary files
 tmp/
 temp/
+
+# OS generated files
+
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Build artifacts
+dist/
+build/
+main
+
+# Binary output
+bin/
+dist/
+fiber-app
+fiber-demo
+
