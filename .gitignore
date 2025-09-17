@@ -47,3 +47,5 @@ Thumbs.db
 # Binary output
 bin/
 dist/
+fiber-app
+fiber-demo
