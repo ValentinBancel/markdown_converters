@@ -19,6 +19,12 @@ go.work
 
 # Environment variables
 .env
+
+# Docker volumes
+postgres_data/
+
+# Logs
+*.log
 .env.local
 
 # Log files
@@ -27,7 +33,6 @@ go.work
 # Database
 *.db
 *.sqlite
-
 # IDE files
 .vscode/
 .idea/
@@ -43,6 +48,12 @@ go.work
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+
+# Build artifacts
+dist/
+build/
+main
 
 # Binary output
 bin/

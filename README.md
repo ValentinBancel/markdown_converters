@@ -1,201 +1,131 @@
-# Golang Fiber PostgreSQL App
+# Markdown Converters
 
-A simple web application built with Go Fiber framework and PostgreSQL database connection.
+A Go API using Fiber framework for converting markdown files to various formats, with PostgreSQL database integration.
 
-## Features
+## Quick Start with Docker Compose
 
-- RESTful API with CRUD operations
-- PostgreSQL database integration
-- Environment-based configuration
-- CORS and logging middleware
-- Health check endpoint
-- User management system
+### Prerequisites
+- Docker
+- Docker Compose
 
-## Prerequisites
-
-- Go 1.24.7 or higher
-- PostgreSQL database
-
-## Installation
-
-1. Clone the repository:
+### Quick Start
 ```bash
-git clone https://github.com/ValentinBancel/markdown_converters.git
-cd markdown_converters
+# Validate setup
+./validate.sh
+
+# Start all services
+make start
+# OR manually:
+docker compose up --build
 ```
 
-2. Install dependencies:
+### Using Make Commands
 ```bash
-go mod tidy
+make help          # Show all available commands
+make validate       # Run validation checks
+make build          # Build all services
+make up             # Start services
+make demo           # Run API demo
+make down           # Stop services
+make clean          # Clean up everything
 ```
 
-3. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your database configuration
-```
+3. The services will be available at:
+   - **API**: http://localhost:8080
+   - **Database**: localhost:5432
+   - **pgAdmin**: http://localhost:5050 (admin@admin.com / admin)
 
-4. Create a PostgreSQL database:
-```sql
-CREATE DATABASE fiber_app;
-```
+### API Endpoints
 
-## Configuration
-
-Copy `.env.example` to `.env` and configure the following variables:
-
-```env
-# Server Configuration
-PORT=3000
-
-# Database Configuration
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=password
-DB_NAME=fiber_app
-DB_SSLMODE=disable
-```
-
-## Running the Application
-
-### Option 1: Demo Version (In-Memory Storage)
-Perfect for testing without setting up PostgreSQL:
-```bash
-make run-demo
-# or
-go run demo.go
-```
-
-### Option 2: PostgreSQL Version
-```bash
-# First, set up your database configuration
-cp .env.example .env
-# Edit .env with your database settings
-
-# Run the application
-make run-postgres
-# or
-go run main.go
-```
-
-### Option 3: Using Docker Compose
-The easiest way to run with PostgreSQL:
-```bash
-docker-compose up
-```
-
-The server will start on `http://localhost:3000` (or the port specified in your .env file).
-
-## API Endpoints
-
-### Health Check
-- `GET /health` - Check if the server is running
-
-### Users API
-- `GET /api/v1/users` - Get all users
-- `POST /api/v1/users` - Create a new user
-- `GET /api/v1/users/:id` - Get a user by ID
-- `PUT /api/v1/users/:id` - Update a user by ID
-- `DELETE /api/v1/users/:id` - Delete a user by ID
+- `GET /api/v1/health` - Health check
+- `GET /api/v1/files` - Get all markdown files
+- `POST /api/v1/files` - Create a new markdown file
+- `GET /api/v1/files/:id` - Get a specific markdown file
+- `PUT /api/v1/files/:id` - Update a markdown file
+- `DELETE /api/v1/files/:id` - Delete a markdown file
+- `POST /api/v1/files/:id/convert-html` - Convert markdown to HTML
 
 ### Example Usage
 
-#### Create a user:
+#### Using the Demo Script
 ```bash
-curl -X POST http://localhost:3000/api/v1/users \
-  -H "Content-Type: application/json" \
-  -d '{"name": "John Doe", "email": "john@example.com"}'
+# Make sure services are running first
+docker compose up -d
+
+# Run the interactive demo
+./demo.sh
 ```
 
-#### Get all users:
-```bash
-curl http://localhost:3000/api/v1/users
-```
+#### Manual API Testing
 
-#### Get a specific user:
-```bash
-curl http://localhost:3000/api/v1/users/1
-```
+1. **Health Check**:
+   ```bash
+   curl http://localhost:8080/api/v1/health
+   ```
 
-#### Update a user:
-```bash
-curl -X PUT http://localhost:3000/api/v1/users/1 \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Jane Doe", "email": "jane@example.com"}'
-```
+2. **Create a markdown file**:
+   ```bash
+   curl -X POST http://localhost:8080/api/v1/files \
+     -H "Content-Type: application/json" \
+     -d '{"name": "test.md", "content": "# Hello World\nThis is a test markdown file."}'
+   ```
 
-#### Delete a user:
-```bash
-curl -X DELETE http://localhost:3000/api/v1/users/1
-```
+3. **Convert to HTML**:
+   ```bash
+   curl -X POST http://localhost:8080/api/v1/files/1/convert-html
+   ```
 
-## Database Schema
+### Environment Variables
 
-The application automatically creates the following table:
-
-```sql
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-## Project Structure
-
-```
-.
-├── main.go              # Main application with PostgreSQL
-├── demo.go              # Demo version with in-memory storage
-├── go.mod               # Go module file
-├── go.sum               # Go dependencies
-├── Makefile             # Build and development commands
-├── Dockerfile           # Docker configuration
-├── docker-compose.yml   # Docker Compose for easy setup
-├── .env.example         # Environment variables template
-├── .gitignore           # Git ignore file
-└── README.md            # This file
-```
-
-## Development Commands
-
-The project includes a Makefile for common development tasks:
+Copy `.env.example` to `.env` and modify as needed:
 
 ```bash
-make build         # Build both applications
-make run-demo      # Run demo version
-make run-postgres  # Run PostgreSQL version
-make clean         # Clean build artifacts
-make deps          # Install dependencies
-make fmt           # Format code
-make help          # Show all available commands
+cp .env.example .env
 ```
 
-## Dependencies
+### Development
 
-- [Fiber](https://github.com/gofiber/fiber) - Web framework
-- [pq](https://github.com/lib/pq) - PostgreSQL driver
-- [godotenv](https://github.com/joho/godotenv) - Environment variables loader
+To stop the services:
+```bash
+docker-compose down
+```
 
-## Two Application Versions
+To rebuild after code changes:
+```bash
+docker-compose up --build
+```
 
-This project provides two versions:
+To view logs:
+```bash
+docker-compose logs api
+docker-compose logs postgres
+```
 
-1. **main.go** - Full PostgreSQL integration for production use
-2. **demo.go** - In-memory storage for quick testing and demonstration
+### Database Management
 
-Both versions share the same API endpoints and functionality, making it easy to test the application without setting up a database.
+Access pgAdmin at http://localhost:5050:
+- Email: admin@admin.com
+- Password: admin
 
-## Contributing
+Add a new server with:
+- Host: postgres
+- Port: 5432
+- Database: markdown_converters
+- Username: postgres
+- Password: postgres
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## Architecture
 
-## License
+- **Go API**: Fiber framework with GORM for database operations
+- **PostgreSQL**: Database for storing markdown files and metadata
+- **Docker**: Containerized deployment
+- **pgAdmin**: Web-based database administration tool
 
-This project is licensed under the MIT License.
+## Features
+
+- REST API for markdown file management
+- PostgreSQL database integration
+- Basic markdown to HTML conversion
+- Docker Compose for easy deployment
+- Health check endpoints
+- CORS enabled for frontend integration
