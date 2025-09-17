@@ -36,4 +36,3 @@ EXPOSE 8080
 
 # Command to run
 CMD ["./main"]
-

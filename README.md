@@ -160,7 +160,6 @@ go build -o server main.go
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
-A Go API using Fiber framework for converting markdown files to various formats, with PostgreSQL database integration.
 
 ## Quick Start with Docker Compose
 
@@ -280,12 +279,3 @@ Add a new server with:
 - **PostgreSQL**: Database for storing markdown files and metadata
 - **Docker**: Containerized deployment
 - **pgAdmin**: Web-based database administration tool
-
-## Features
-
-- REST API for markdown file management
-- PostgreSQL database integration
-- Basic markdown to HTML conversion
-- Docker Compose for easy deployment
-- Health check endpoints
-- CORS enabled for frontend integration

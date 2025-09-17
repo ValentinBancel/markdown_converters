@@ -5,6 +5,7 @@ npm-debug.log*
 # Build outputs
 /frontend/dist/
 /backend/server
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -18,28 +19,27 @@ npm-debug.log*
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
-
 # Go workspace file
 go.work
 
+# Go vendor
+vendor/
+
 # Environment variables
 .env
+.env.local
+.env.production
 
 # Docker volumes
 postgres_data/
 
 # Logs
 *.log
-.env.local
-
-# Log files
-*.log
 
 # Database
 *.db
 *.sqlite
+
 # IDE files
 .vscode/
 .idea/
@@ -50,37 +50,20 @@ postgres_data/
 # OS files
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log
-
-# Environment files
-.env
-.env.local
-.env.production
-
-# Go vendor
-vendor/
-
-# Temporary files
-tmp/
-temp/
-
-# OS generated files
-
 ._*
 .Spotlight-V100
 .Trashes
 ehthumbs.db
 
+# Temporary files
+tmp/
+temp/
+
 # Build artifacts
 dist/
 build/
 main
-
-# Binary output
 bin/
-dist/
 fiber-app
 fiber-demo
 
