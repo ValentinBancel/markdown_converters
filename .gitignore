@@ -25,12 +25,20 @@ postgres_data/
 
 # Logs
 *.log
+.env.local
 
+# Log files
+*.log
+
+# Database
+*.db
+*.sqlite
 # IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
 # OS generated files
 .DS_Store
@@ -41,7 +49,14 @@ postgres_data/
 ehthumbs.db
 Thumbs.db
 
+
 # Build artifacts
 dist/
 build/
 main
+
+# Binary output
+bin/
+dist/
+fiber-app
+fiber-demo
