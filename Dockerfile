@@ -1,8 +1,8 @@
 # Build stage
 FROM golang:1.21-alpine AS builder
 
-# Install ca-certificates for HTTPS
-RUN apk --no-cache add ca-certificates
+# Install git (required for go mod download) and ca-certificates
+RUN apk --no-cache add git ca-certificates
 
 # Set working directory
 WORKDIR /app

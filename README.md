@@ -8,13 +8,27 @@ A Go API using Fiber framework for converting markdown files to various formats,
 - Docker
 - Docker Compose
 
-### Running the Application
+### Quick Start
+```bash
+# Validate setup
+./validate.sh
 
-1. Clone the repository and navigate to the project directory
-2. Build and start all services:
-   ```bash
-   docker-compose up --build
-   ```
+# Start all services
+make start
+# OR manually:
+docker compose up --build
+```
+
+### Using Make Commands
+```bash
+make help          # Show all available commands
+make validate       # Run validation checks
+make build          # Build all services
+make up             # Start services
+make demo           # Run API demo
+make down           # Stop services
+make clean          # Clean up everything
+```
 
 3. The services will be available at:
    - **API**: http://localhost:8080
@@ -32,6 +46,17 @@ A Go API using Fiber framework for converting markdown files to various formats,
 - `POST /api/v1/files/:id/convert-html` - Convert markdown to HTML
 
 ### Example Usage
+
+#### Using the Demo Script
+```bash
+# Make sure services are running first
+docker compose up -d
+
+# Run the interactive demo
+./demo.sh
+```
+
+#### Manual API Testing
 
 1. **Health Check**:
    ```bash
