@@ -1,8 +1,8 @@
 # Build stage
 FROM golang:1.21-alpine AS builder
 
-# Install git and ca-certificates, with skip verify for restricted networks
-RUN apk --no-cache add git ca-certificates || echo "Warning: Could not install packages"
+# Install git (required for go mod download) 
+RUN apk --no-cache add git || true
 
 # Set working directory
 WORKDIR /app
@@ -21,12 +21,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 # Final stage - use alpine with ca-certificates already present
 FROM alpine:latest
-
-# Install ca-certificates (skip if fails)
-RUN apk --no-cache add ca-certificates || echo "Warning: Could not install ca-certificates"
-
-# Create non-root user
-RUN adduser -D -g '' appuser
 
 # Set working directory
 WORKDIR /app
