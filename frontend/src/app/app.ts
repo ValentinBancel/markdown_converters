@@ -75,10 +75,13 @@ export class App {
         if (response.success) {
           this.convertedContent = response.convertedContent;
           
-          // Handle PDF file data
+          // Handle file downloads for binary formats
           if (response.format === 'pdf' && response.fileData) {
             this.pdfData = response.fileData;
             this.createDownloadUrl(response.fileData, 'document.pdf', 'application/pdf');
+          } else if (response.format === 'html-file' && response.convertedContent) {
+            // Create download for HTML file
+            this.createHtmlDownloadUrl(response.convertedContent, 'document.html', 'text/html');
           } else {
             this.pdfData = '';
             this.downloadUrl = '';
@@ -119,12 +122,35 @@ export class App {
     }
   }
 
-  // Trigger download
+  // Create download URL for HTML files
+  createHtmlDownloadUrl(htmlContent: string, filename: string, mimeType: string) {
+    try {
+      const blob = new Blob([htmlContent], { type: mimeType });
+      this.downloadUrl = URL.createObjectURL(blob);
+    } catch (error) {
+      console.error('Error creating HTML download URL:', error);
+      this.error = 'Error preparing HTML download';
+    }
+  }
+
+  // Trigger download for PDF
   downloadPdf() {
     if (this.downloadUrl) {
       const link = document.createElement('a');
       link.href = this.downloadUrl;
       link.download = 'document.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+
+  // Trigger download for HTML
+  downloadHtml() {
+    if (this.downloadUrl) {
+      const link = document.createElement('a');
+      link.href = this.downloadUrl;
+      link.download = 'document.html';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

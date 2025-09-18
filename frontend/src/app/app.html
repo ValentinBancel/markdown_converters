@@ -146,8 +146,39 @@ Example:
               </div>
             </div>
 
+            <!-- HTML File Output -->
+            <div *ngIf="selectedFormat === 'html-file'" class="p-4">
+              <div class="mb-4">
+                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">HTML File Output</span>
+              </div>
+              <div class="flex items-center justify-center p-8 bg-gray-50 rounded border">
+                <div class="text-center">
+                  <svg class="mx-auto h-12 w-12 text-blue-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                  </svg>
+                  <h3 class="text-lg font-medium text-gray-900 mb-2">HTML File Generated Successfully</h3>
+                  <p class="text-sm text-gray-600 mb-4">Complete HTML document with styling ready for download</p>
+                  <button 
+                    (click)="downloadHtml()"
+                    [disabled]="!downloadUrl"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Download HTML File
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Preview of the HTML content -->
+              <div class="mt-4 pt-4 border-t border-gray-200">
+                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">HTML Preview</span>
+                <div class="mt-2 p-4 bg-white border rounded" [innerHTML]="convertedContent"></div>
+              </div>
+            </div>
+
             <!-- Other Format Output -->
-            <div *ngIf="selectedFormat !== 'html' && selectedFormat !== 'pdf'" class="p-4">
+            <div *ngIf="selectedFormat !== 'html' && selectedFormat !== 'pdf' && selectedFormat !== 'html-file'" class="p-4">
               <div class="mb-2">
                 <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">{{ selectedFormat.toUpperCase() }} Output</span>
               </div>
